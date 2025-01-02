@@ -21,6 +21,11 @@ def window_three_show():
     window_three.deiconify()
 
 
+def window_four_show():
+    ''' открыть четвертое окно'''
+    window_four.deiconify()
+
+
 def on_close_second_window():
     ''' закрыть второе окно'''
     window_two.withdraw()
@@ -29,6 +34,11 @@ def on_close_second_window():
 def on_close_three_window():
     ''' закрыть третье окно'''
     window_three.withdraw()
+
+
+def on_close_four_window():
+    ''' закрыть третье окно'''
+    window_four.withdraw()
 
 
 def form_submit():
@@ -44,10 +54,43 @@ def form_submit():
 
 def form_redac():
     ''' редактирование записи в бд'''
-    print('good')
+    old_users = old_user_form.get()
+    new_users = new_user_form.get()
+    old_pas = old_pas_form.get()
+    new_pass = new_pass_form.get()
+
+    user = Users.get(Users.username == old_users, Users.password == old_pas)
+    user.username = new_users
+    user.password = new_pass
+    user.save()
+
+    messagebox.showinfo('Baaazaaa', 'Данные успешно обновленны')
+    old_user_form.delete(0, tk.END)
+    new_user_form.delete(0, tk.END)
+    old_pas_form.delete(0, tk.END)
+    new_pass_form.delete(0, tk.END)
 
 
-# создание главноего окна
+def del_username():
+    ''' Удаление строки из бд'''
+    del_user = user_del_form.get()
+
+    qwer = Users.delete().where(Users.username == del_user)
+    qwer.execute()
+    messagebox.showinfo("Baaazaaa", "Пользователь успещно удален")
+    user_del_form.delete(0, tk.END)
+    update_id()
+
+
+def update_id():
+    ''' Обновление id после удаления'''
+    users = Users.select().order_by(Users.id)
+    for new_id, user in enumerate(users, start=1):
+        if user.id != new_id:
+            user.id = new_id
+            user.save()
+
+#  создание главноего окна
 
 
 window_one = tk.Tk()
@@ -78,7 +121,7 @@ gerate_but = Button(frame_two, text='Создать запись',
 del_but = Button(frame_two, text='Изменить запись',
                  command=window_three_show)
 apd_but = Button(frame_two, text='Удалить запись',
-                 command=window_two_show)
+                 command=window_four_show)
 
 gerate_but.grid(row=0, column=0)
 del_but.grid(row=0, column=1)
@@ -145,6 +188,27 @@ new_pass_form.grid(row=3, column=1, padx=10, pady=10)
 but_app.grid(row=4, column=0, columnspan=2, padx=10, pady=10)
 
 
+# Создание чевертого окна, для удаления данных из бд
+
+window_four = tk.Tk()
+window_four.title('Удаление данных')
+window_four.geometry('450x100')
+window_four.resizable(False, False)
+window_four.withdraw()
+window_four.protocol('WM_DELETE_WINDOW', on_close_four_window)
+
+
+user_del = ttk.Label(window_four,
+                     text='Введите username, который необходимо удалить')
+user_del_form = ttk.Entry(window_four, justify='left')
+user_del_but = ttk.Button(window_four, text='Удалить username',
+                          command=del_username)
+
+user_del.grid(row=0, column=0, padx=10, pady=10)
+user_del_form.grid(row=0, column=1, padx=10, pady=10)
+user_del_but.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
+
+
 # конец прог
 
 
@@ -154,6 +218,8 @@ def on_close_main_window():
         window_two.destroy()
     if window_three is not None and window_three.winfo_exists():
         window_three.destroy()
+    if window_four is not None and window_four.winfo_exists():
+        window_four.destroy()
     window_one.destroy()
 
 
