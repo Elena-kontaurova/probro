@@ -1,17 +1,266 @@
 ''' так внешка'''
 import tkinter as tk
-from tkinter import ttk, Button
-from connect import db
-from logic import window_two_show, window_two_two_show, window_two_three_show, \
-            window_three_show, window_three_two_show, window_three_three_show, \
-            window_four_show, window_four_two_show, window_four_three_show, \
-            on_close_main_window, on_close_second_two_window, on_close_second_three_window, \
-            on_close_second_window, on_close_three_two_window, on_close_three_window, \
-            on_close_three_three_window, on_close_four_two_window, on_close_four_window, \
-            on_close_four_three_window, dow_dan, dow_dan_educa, dow_dan_inforn
-from datab import form_redac, form_redac_three, form_redac_two, form_submit, \
-                form_submit_three, form_submit_two, del_email_two, del_username, \
-                del_group_spe
+from tkinter import ttk, Button, messagebox
+from connect import Users, Inform, Education, db
+
+
+def dow_dan():
+    ''' данные из таблица users'''
+    us_list = Users.select()
+    for user in us_list:
+        table.insert('', 'end', values=(user.id, user.username, user.password))
+
+
+def dow_dan_inforn():
+    ''' Данные из таблица inforn'''
+    inf_list = Inform.select()
+    for usess in inf_list:
+        table_two.insert('', 'end', values=(usess.id, usess.age, usess.email))
+
+
+def dow_dan_educa():
+    ''' Данные из таблица education'''
+    us_list = Education.select()
+    for user in us_list:
+        table_three.insert('', 'end', values=(user.id, user.group,
+                                              user.specialization))
+
+
+# Открытие окон для создания записи в таблице
+
+
+def window_two_show():
+    ''' открыть создание окно - useres'''
+    window_two.deiconify()
+
+
+def window_two_two_show():
+    ''' открыть создание окно - inform'''
+    window_two_two.deiconify()
+
+
+def window_two_three_show():
+    ''' открыть создание окно - education'''
+    window_two_three.deiconify()
+
+
+# открытие окон для редактирования записей в таблице
+
+
+def window_three_show():
+    ''' открыть редакт окно - users'''
+    window_three.deiconify()
+
+
+def window_three_two_show():
+    ''' открыть редакт окно - inform'''
+    window_three_two.deiconify()
+
+
+def window_three_three_show():
+    ''' открыть редакт окно - education'''
+    window_three_three.deiconify()
+
+
+# открытие окон для удаления записией в таблицах
+
+
+def window_four_show():
+    ''' открыть удаление окно - users'''
+    window_four.deiconify()
+
+
+def window_four_two_show():
+    ''' открыть удаление окно - inform'''
+    window_four_two.deiconify()
+
+
+def window_four_three_show():
+    ''' открыть удаление окно - education'''
+    window_four_three.deiconify()
+
+
+# закрытие окон для создания записей в таблице
+
+
+def on_close_second_window():
+    ''' закрыть создание окно - users'''
+    window_two.withdraw()
+
+
+def on_close_second_two_window():
+    ''' закрыть создание окно - inform'''
+    window_two_two.withdraw()
+
+
+def on_close_second_three_window():
+    ''' закрыть создание окно - education'''
+    window_two_three.withdraw()
+
+# закрытие окон для редактирования записей в таблице
+
+
+def on_close_three_window():
+    ''' закрыть редак окно - users'''
+    window_three.withdraw()
+
+
+def on_close_three_two_window():
+    ''' закрыть редак окно - infowm'''
+    window_three_two.withdraw()
+
+
+def on_close_three_three_window():
+    ''' закрыть редак окно - education'''
+    window_three_three.withdraw()
+
+
+# Закрытие окон для удаления записей в таблице
+
+
+def on_close_four_window():
+    ''' закрыть удалние окно - users'''
+    window_four.withdraw()
+
+
+def on_close_four_two_window():
+    ''' закрыть удаление окно - inform'''
+    window_four_two.withdraw()
+
+
+def on_close_four_three_window():
+    ''' закрыть удаление окно - education'''
+    window_four_three.withdraw()
+
+
+def form_submit():
+    ''' создание записи в бд - useres'''
+    username = app_username_form.get()
+    password = app_password_form.get()
+
+    Users.create(username=username, password=password)
+    messagebox.showinfo("baaazaaa", "Данные добавлены успешно!")
+    app_username_form.delete(0, tk.END)  # Очистка поля ввода имени
+    app_password_form.delete(0, tk.END)  # Очистка поля ввода возраста
+
+
+def form_submit_two():
+    ''' Создание записи в бд - inform'''
+    age = app_age_form.get()
+    email = app_email_form.get()
+
+    Inform.create(age=age, email=email)
+    messagebox.showinfo("baaazaaa", "Данные добавлены успешно!")
+    app_age_form.delete(0, tk.END)
+    app_email_form.delete(0, tk.END)
+
+
+def form_submit_three():
+    ''' Создание записи в бд - education'''
+    group = app_gr_form.get()
+    specialization = app_spe_form.get()
+
+    Education.create(group=group, specialization=specialization)
+    messagebox.showinfo("baaazaaa", "Данные добавлены успешно!")
+    app_gr_form.delete(0, tk.END)
+    app_spe_form.delete(0, tk.END)
+
+
+# методы для редактирования записей в таблице
+
+
+def form_redac():
+    ''' редактирование записи в таблица - users'''
+    old_users = old_user_form.get()
+    new_users = new_user_form.get()
+    old_pas = old_pas_form.get()
+    new_pass = new_pass_form.get()
+
+    user = Users.get(Users.username == old_users, Users.password == old_pas)
+    user.username = new_users
+    user.password = new_pass
+    user.save()
+
+    messagebox.showinfo('Baaazaaa', 'Данные успешно обновленны')
+    old_user_form.delete(0, tk.END)
+    new_user_form.delete(0, tk.END)
+    old_pas_form.delete(0, tk.END)
+    new_pass_form.delete(0, tk.END)
+
+
+def form_redac_two():
+    ''' редактирование записи в таб - infown'''
+    old_agee = old_age_form.get()
+    new_agee = new_age_form.get()
+    old_emaill = old_email_form.get()
+    new_emaill = new_email_form.get()
+
+    ini = Inform.get(Inform.age == old_agee, Inform.email == old_emaill)
+    ini.age = new_agee
+    ini.email = new_emaill
+    ini.save()
+    messagebox.showinfo('Baaazaaa', 'Данные успешно обновленны')
+    old_age_form.delete(0, tk.END)
+    new_age_form.delete(0, tk.END)
+    old_email_form.delete(0, tk.END)
+    new_email_form.delete(0, tk.END)
+
+
+def form_redac_three():
+    ''' редактирование записи в таб - education'''
+    old_group = old_gro_form.get()
+    new_group = new_gro_form.get()
+    old_speci = old_spe_form.get()
+    new_speci = new_spe_form.get()
+
+    edu = Education.get(Education.group == old_group,
+                        Education.specialization == old_speci)
+    edu.group = new_group
+    edu.specialization = new_speci
+    edu.save()
+    messagebox.showinfo('Baaazaaa', 'Данные успешно обновленны')
+    old_gro_form.delete(0, tk.END)
+    new_gro_form.delete(0, tk.END)
+    old_spe_form.delete(0, tk.END)
+    new_spe_form.delete(0, tk.END)
+
+
+# методы для удаления записей в таблице
+
+
+def del_username():
+    ''' Удаление строки из таблицы - infown'''
+    del_user = user_del_form.get()
+
+    qwer = Users.delete().where(Users.username == del_user)
+    qwer.execute()
+    messagebox.showinfo("Baaazaaa", "Пользователь успещно удален")
+    user_del_form.delete(0, tk.END)
+
+
+def del_email_two():
+    ''' Удаление строки из таблица - inform'''
+    del_ema = email_del_form.get()
+
+    dede = Inform.delete().where(Inform.email == del_ema)
+    dede.execute()
+    messagebox.showinfo("Baaazaaa", "Пользователь успещно удален")
+    email_del_form.delete(0, tk.END)
+
+
+def del_group_spe():
+    ''' Удаление строки из таблица - education'''
+    grou_dell = gro_del_form.get()
+    spec_del = spe_del_form.get()
+
+    delli = Education.delete().where(Education.group == grou_dell,
+                                     Education.specialization == spec_del)
+    delli.execute()
+    messagebox.showinfo("Baaazaaa", "Пользователь успещно удален")
+    gro_del_form.delete(0, tk.END)
+    spe_del_form.delete(0, tk.END)
+
+
 #  создание главноего окна
 
 
@@ -351,6 +600,29 @@ gro_del_form.grid(row=0, column=1, padx=10, pady=10)
 spe_del.grid(row=1, column=0, padx=10, pady=10)
 spe_del_form.grid(row=1, column=1, padx=10, pady=10)
 email_del_but.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
+
+
+def on_close_main_window():
+    ''' прерывание программы, при закрытии основного окна'''
+    if window_two is not None and window_two.winfo_exists():
+        window_two.destroy()
+    if window_two_two is not None and window_two_two.winfo_exists():
+        window_two_two.destroy()
+    if window_two_three is not None and window_two_three.winfo_exists():
+        window_two_three.destroy()
+    if window_three is not None and window_three.winfo_exists():
+        window_three.destroy()
+    if window_three_two is not None and window_three_two.winfo_exists():
+        window_three_two.destroy()
+    if window_three_three is not None and window_three_three.winfo_exists():
+        window_three_three.destroy()
+    if window_four is not None and window_four.winfo_exists():
+        window_four.destroy()
+    if window_four_two is not None and window_four_two.winfo_exists():
+        window_four_two.destroy()
+    if window_four_three is not None and window_four_three.winfo_exists():
+        window_four_three.destroy()
+    window_one.destroy()
 
 
 db.connect()
