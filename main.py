@@ -1,267 +1,19 @@
-''' так внешка'''
+''' так внешка '''
 import tkinter as tk
-from tkinter import ttk, Button, messagebox
-from connect import Users, Inform, Education, db
-
-
-def dow_dan():
-    ''' данные из таблица users'''
-    us_list = Users.select()
-    for user in us_list:
-        table.insert('', 'end', values=(user.id, user.username, user.password))
-
-
-def dow_dan_inforn():
-    ''' Данные из таблица inforn'''
-    inf_list = Inform.select()
-    for usess in inf_list:
-        table_two.insert('', 'end', values=(usess.id, usess.age, usess.email))
-
-
-def dow_dan_educa():
-    ''' Данные из таблица education'''
-    us_list = Education.select()
-    for user in us_list:
-        table_three.insert('', 'end', values=(user.id, user.group,
-                                              user.specialization))
-
-
-# Открытие окон для создания записи в таблице
-
-
-def window_two_show():
-    ''' открыть создание окно - useres'''
-    window_two.deiconify()
-
-
-def window_two_two_show():
-    ''' открыть создание окно - inform'''
-    window_two_two.deiconify()
-
-
-def window_two_three_show():
-    ''' открыть создание окно - education'''
-    window_two_three.deiconify()
-
-
-# открытие окон для редактирования записей в таблице
-
-
-def window_three_show():
-    ''' открыть редакт окно - users'''
-    window_three.deiconify()
-
-
-def window_three_two_show():
-    ''' открыть редакт окно - inform'''
-    window_three_two.deiconify()
-
-
-def window_three_three_show():
-    ''' открыть редакт окно - education'''
-    window_three_three.deiconify()
-
-
-# открытие окон для удаления записией в таблицах
-
-
-def window_four_show():
-    ''' открыть удаление окно - users'''
-    window_four.deiconify()
-
-
-def window_four_two_show():
-    ''' открыть удаление окно - inform'''
-    window_four_two.deiconify()
-
-
-def window_four_three_show():
-    ''' открыть удаление окно - education'''
-    window_four_three.deiconify()
-
-
-# закрытие окон для создания записей в таблице
-
-
-def on_close_second_window():
-    ''' закрыть создание окно - users'''
-    window_two.withdraw()
-
-
-def on_close_second_two_window():
-    ''' закрыть создание окно - inform'''
-    window_two_two.withdraw()
-
-
-def on_close_second_three_window():
-    ''' закрыть создание окно - education'''
-    window_two_three.withdraw()
-
-# закрытие окон для редактирования записей в таблице
-
-
-def on_close_three_window():
-    ''' закрыть редак окно - users'''
-    window_three.withdraw()
-
-
-def on_close_three_two_window():
-    ''' закрыть редак окно - infowm'''
-    window_three_two.withdraw()
-
-
-def on_close_three_three_window():
-    ''' закрыть редак окно - education'''
-    window_three_three.withdraw()
-
-
-# Закрытие окон для удаления записей в таблице
-
-
-def on_close_four_window():
-    ''' закрыть удалние окно - users'''
-    window_four.withdraw()
-
-
-def on_close_four_two_window():
-    ''' закрыть удаление окно - inform'''
-    window_four_two.withdraw()
-
-
-def on_close_four_three_window():
-    ''' закрыть удаление окно - education'''
-    window_four_three.withdraw()
-
-
-def form_submit():
-    ''' создание записи в бд - useres'''
-    username = app_username_form.get()
-    password = app_password_form.get()
-
-    Users.create(username=username, password=password)
-    messagebox.showinfo("baaazaaa", "Данные добавлены успешно!")
-    app_username_form.delete(0, tk.END)  # Очистка поля ввода имени
-    app_password_form.delete(0, tk.END)  # Очистка поля ввода возраста
-
-
-def form_submit_two():
-    ''' Создание записи в бд - inform'''
-    age = app_age_form.get()
-    email = app_email_form.get()
-
-    Inform.create(age=age, email=email)
-    messagebox.showinfo("baaazaaa", "Данные добавлены успешно!")
-    app_age_form.delete(0, tk.END)
-    app_email_form.delete(0, tk.END)
-
-
-def form_submit_three():
-    ''' Создание записи в бд - education'''
-    group = app_gr_form.get()
-    specialization = app_spe_form.get()
-
-    Education.create(group=group, specialization=specialization)
-    messagebox.showinfo("baaazaaa", "Данные добавлены успешно!")
-    app_gr_form.delete(0, tk.END)
-    app_spe_form.delete(0, tk.END)
-
-
-# методы для редактирования записей в таблице
-
-
-def form_redac():
-    ''' редактирование записи в таблица - users'''
-    old_users = old_user_form.get()
-    new_users = new_user_form.get()
-    old_pas = old_pas_form.get()
-    new_pass = new_pass_form.get()
-
-    user = Users.get(Users.username == old_users, Users.password == old_pas)
-    user.username = new_users
-    user.password = new_pass
-    user.save()
-
-    messagebox.showinfo('Baaazaaa', 'Данные успешно обновленны')
-    old_user_form.delete(0, tk.END)
-    new_user_form.delete(0, tk.END)
-    old_pas_form.delete(0, tk.END)
-    new_pass_form.delete(0, tk.END)
-
-
-def form_redac_two():
-    ''' редактирование записи в таб - infown'''
-    old_agee = old_age_form.get()
-    new_agee = new_age_form.get()
-    old_emaill = old_email_form.get()
-    new_emaill = new_email_form.get()
-
-    ini = Inform.get(Inform.age == old_agee, Inform.email == old_emaill)
-    ini.age = new_agee
-    ini.email = new_emaill
-    ini.save()
-    messagebox.showinfo('Baaazaaa', 'Данные успешно обновленны')
-    old_age_form.delete(0, tk.END)
-    new_age_form.delete(0, tk.END)
-    old_email_form.delete(0, tk.END)
-    new_email_form.delete(0, tk.END)
-
-
-def form_redac_three():
-    ''' редактирование записи в таб - education'''
-    old_group = old_gro_form.get()
-    new_group = new_gro_form.get()
-    old_speci = old_spe_form.get()
-    new_speci = new_spe_form.get()
-
-    edu = Education.get(Education.group == old_group,
-                        Education.specialization == old_speci)
-    edu.group = new_group
-    edu.specialization = new_speci
-    edu.save()
-    messagebox.showinfo('Baaazaaa', 'Данные успешно обновленны')
-    old_gro_form.delete(0, tk.END)
-    new_gro_form.delete(0, tk.END)
-    old_spe_form.delete(0, tk.END)
-    new_spe_form.delete(0, tk.END)
-
-
-# методы для удаления записей в таблице
-
-
-def del_username():
-    ''' Удаление строки из таблицы - infown'''
-    del_user = user_del_form.get()
-
-    qwer = Users.delete().where(Users.username == del_user)
-    qwer.execute()
-    messagebox.showinfo("Baaazaaa", "Пользователь успещно удален")
-    user_del_form.delete(0, tk.END)
-
-
-def del_email_two():
-    ''' Удаление строки из таблица - inform'''
-    del_ema = email_del_form.get()
-
-    dede = Inform.delete().where(Inform.email == del_ema)
-    dede.execute()
-    messagebox.showinfo("Baaazaaa", "Пользователь успещно удален")
-    email_del_form.delete(0, tk.END)
-
-
-def del_group_spe():
-    ''' Удаление строки из таблица - education'''
-    grou_dell = gro_del_form.get()
-    spec_del = spe_del_form.get()
-
-    delli = Education.delete().where(Education.group == grou_dell,
-                                     Education.specialization == spec_del)
-    delli.execute()
-    messagebox.showinfo("Baaazaaa", "Пользователь успещно удален")
-    gro_del_form.delete(0, tk.END)
-    spe_del_form.delete(0, tk.END)
-
-
-#  создание главноего окна
+from tkinter import ttk, Button
+from connect import db
+from controller.users_con import open_user_window, open_user_edit_window, \
+    open_user_delete_window, close_user_window, close_user_edit_window_con, \
+    close_user_delete_window, submit_user_form, submit_edit_user_form, \
+    submit_delete_user_form, load_users
+from controller.inform_con import open_inform_open_window, open_inform_edit_window, \
+    open_inf_delete_window, close_inform_open_window, close_inform_edit_window, \
+    close_inform_delete_window, submit_inform_form, submit_edit_inform_form, \
+    submit_delete_inf_form, load_inform
+from controller.educa_con import open_educa_open_window, open_educa_edit_window, \
+    open_edu_delete_window, close_educ_open_window, close_educ_edit_window, \
+    close_educ_delete_window, submit_educa_form, submit_edit_educa_form, \
+    submit_delete_educ_form, load_education
 
 
 window_one = tk.Tk()
@@ -299,11 +51,11 @@ table.heading('Password', text='Password')
 table.grid()
 
 gerate_but = Button(frame_two, text='Создать запись',
-                    command=window_two_show)
+                    command=lambda: open_user_window(window_two))
 del_but = Button(frame_two, text='Изменить запись',
-                 command=window_three_show)
+                 command=lambda: open_user_edit_window(window_three))
 apd_but = Button(frame_two, text='Удалить запись',
-                 command=window_four_show)
+                 command=lambda: open_user_delete_window(window_four))
 
 
 gerate_but.grid(row=0, column=0, padx=20, pady=10)
@@ -326,11 +78,11 @@ table_two.heading('Email', text='Email')
 table_two.grid()
 
 create_but_two = ttk.Button(frame_four, text='Создать запись',
-                            command=window_two_two_show)
+                            command=lambda: open_inform_open_window(window_two_two))
 apd_but_two = ttk.Button(frame_four, text='Изменить данные',
-                         command=window_three_two_show)
+                         command=lambda: open_inform_edit_window(window_three_two))
 del_but_two = ttk.Button(frame_four, text='Удалить записи',
-                         command=window_four_two_show)
+                         command=lambda: open_inf_delete_window(window_four_two))
 
 create_but_two.grid(row=0, column=0, padx=20, pady=10)
 apd_but_two.grid(row=1, column=0, padx=20, pady=10)
@@ -351,11 +103,11 @@ table_three.heading('Specialization', text='Specialization')
 table_three.grid()
 
 create_but_three = ttk.Button(frame_six, text='Создать запись',
-                              command=window_two_three_show)
+                              command=lambda: open_educa_open_window(window_two_three))
 apd_but_three = ttk.Button(frame_six, text='Изменить данные',
-                           command=window_three_three_show)
+                           command=lambda: open_educa_edit_window(window_three_three))
 del_but_three = ttk.Button(frame_six, text='Удалить записи',
-                           command=window_four_three_show)
+                           command=lambda: open_edu_delete_window(window_four_three))
 
 create_but_three.grid(row=0, column=0, padx=20, pady=10)
 apd_but_three.grid(row=1, column=0, padx=20, pady=10)
@@ -364,12 +116,12 @@ del_but_three.grid(row=2, column=0, padx=20, pady=10)
 # создание второго окна, для создания записи в таблице - users
 
 
-window_two = tk.Tk()
+window_two = tk.Toplevel(window_one)
 window_two.title('Создание записи Users')
 window_two.geometry('300x300')
 window_two.resizable(False, False)
 window_two.withdraw()
-window_two.protocol('WM_DELETE_WINDOW', on_close_second_window)
+window_two.protocol('WM_DELETE_WINDOW', lambda: close_user_window(window_two))
 
 frame_create = tk.Frame(window_two, width=300, height=300)
 frame_create.grid(row=0, column=0)
@@ -379,7 +131,8 @@ app_username_form = ttk.Entry(frame_create, justify='left')
 app_password_text = ttk.Label(frame_create, text='Добавить password')
 app_password_form = ttk.Entry(frame_create, justify='left')
 create_but = ttk.Button(frame_create, text='Создать',
-                        command=form_submit)
+                        command=lambda:
+                        submit_user_form(app_username_form.get(), app_password_form.get()))
 
 app_username_text.grid(row=0, column=0, padx=10, pady=10)
 app_username_form.grid(row=0, column=1, padx=10, pady=10)
@@ -391,12 +144,12 @@ create_but.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
 # СОздание второго окна, для создания записи в бд, таблица Inform
 
 
-window_two_two = tk.Tk()
+window_two_two = tk.Toplevel(window_one)
 window_two_two.title('Создание записи Inform')
 window_two_two.geometry('300x300')
 window_two_two.resizable(False, False)
 window_two_two.withdraw()
-window_two_two.protocol('WM_DELETE_WINDOW', on_close_second_two_window)
+window_two_two.protocol('WM_DELETE_WINDOW', lambda: close_inform_open_window(window_two_two))
 
 frame_create_info = tk.Frame(window_two_two, width=300, height=300)
 frame_create_info.grid(row=0, column=0)
@@ -406,7 +159,8 @@ app_age_form = ttk.Entry(frame_create_info, justify='left')
 app_email_text = ttk.Label(frame_create_info, text='Добавить email')
 app_email_form = ttk.Entry(frame_create_info, justify='left')
 create_but_infowm = ttk.Button(frame_create_info, text='Создать',
-                               command=form_submit_two)
+                               command=lambda:
+                               submit_inform_form(app_age_form.get(), app_email_form.get()))
 
 app_age_text.grid(row=0, column=0, padx=10, pady=10)
 app_age_form.grid(row=0, column=1, padx=10, pady=10)
@@ -417,12 +171,13 @@ create_but_infowm.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
 # создание второго окна, для создания записи в таблице Education
 
 
-window_two_three = tk.Tk()
+window_two_three = tk.Toplevel(window_one)
 window_two_three.title('Создание записи Education')
 window_two_three.geometry('300x300')
 window_two_three.resizable(False, False)
 window_two_three.withdraw()
-window_two_three.protocol('WM_DELETE_WINDOW', on_close_second_three_window)
+window_two_three.protocol('WM_DELETE_WINDOW',
+                          lambda: close_educ_open_window(window_two_three))
 
 frame_create_edu = tk.Frame(window_two_three, width=300, height=300)
 frame_create_edu.grid(row=0, column=0)
@@ -432,7 +187,8 @@ app_gr_form = ttk.Entry(frame_create_edu, justify='left')
 app_spe_text = ttk.Label(frame_create_edu, text='Добавить specialization')
 app_spe_form = ttk.Entry(frame_create_edu, justify='left')
 create_but_edu = ttk.Button(frame_create_edu, text='Создать',
-                            command=form_submit_three)
+                            command=lambda:
+                            submit_educa_form(app_gr_form.get(), app_spe_form.get()))
 
 app_gr_text.grid(row=0, column=0, padx=10, pady=10)
 app_gr_form.grid(row=0, column=1, padx=10, pady=10)
@@ -444,12 +200,12 @@ create_but_edu.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
 # создание третьего окна для изменения записи, в таблице - users
 
 
-window_three = tk.Tk()
+window_three = tk.Toplevel(window_one)
 window_three.title('Редактирование записи Users')
 window_three.geometry('300x300')
 window_three.resizable(False, False)
 window_three.withdraw()
-window_three.protocol('WM_DELETE_WINDOW', on_close_three_window)
+window_three.protocol('WM_DELETE_WINDOW', lambda: close_user_edit_window_con(window_three))
 
 old_user = ttk.Label(window_three, text='Старый username')
 old_user_form = ttk.Entry(window_three, justify='left')
@@ -460,7 +216,9 @@ old_pas_form = ttk.Entry(window_three, justify='left')
 new_pas = ttk.Label(window_three, text='Новый password')
 new_pass_form = ttk.Entry(window_three, justify='left')
 but_app = ttk.Button(window_three, text='Изменить данные',
-                     command=form_redac)
+                     command=lambda:
+                     submit_edit_user_form(old_user_form.get(), old_pas_form.get(),
+                                           new_user_form.get(), new_pass_form.get()))
 
 old_user.grid(row=0, column=0, padx=10, pady=10)
 old_user_form.grid(row=0, column=1, padx=10, pady=10)
@@ -476,12 +234,13 @@ but_app.grid(row=4, column=0, columnspan=2, padx=10, pady=10)
 # создание третьего окна, для изменения записи в  таблице - inform
 
 
-window_three_two = tk.Tk()
+window_three_two = tk.Toplevel(window_one)
 window_three_two.title('Редактирование записи Infowm')
 window_three_two.geometry('300x300')
 window_three_two.resizable(False, False)
 window_three_two.withdraw()
-window_three_two.protocol('WM_DELETE_WINDOW', on_close_three_two_window)
+window_three_two.protocol('WM_DELETE_WINDOW',
+                          lambda: close_inform_edit_window(window_three_two))
 
 old_age = ttk.Label(window_three_two, text='Старый age')
 old_age_form = ttk.Entry(window_three_two, justify='left')
@@ -492,7 +251,9 @@ old_email_form = ttk.Entry(window_three_two, justify='left')
 new_email = ttk.Label(window_three_two, text='Новый email')
 new_email_form = ttk.Entry(window_three_two, justify='left')
 but_app_inf = ttk.Button(window_three_two, text='Изменить данные',
-                         command=form_redac_two)
+                         command=lambda:
+                         submit_edit_inform_form(old_age_form.get(), new_age_form.get(),
+                                                 old_email_form.get(), new_email_form.get()))
 
 old_age.grid(row=0, column=0, padx=10, pady=10)
 old_age_form.grid(row=0, column=1, padx=10, pady=10)
@@ -506,12 +267,13 @@ but_app_inf.grid(row=4, column=0, columnspan=2, padx=10, pady=10)
 
 # Создание третьего окна, для изменения записи в таблице - Education
 
-window_three_three = tk.Tk()
+window_three_three = tk.Toplevel(window_one)
 window_three_three.title('Редактирование записи Education')
 window_three_three.geometry('300x300')
 window_three_three.resizable(False, False)
 window_three_three.withdraw()
-window_three_three.protocol('WM_DELETE_WINDOW', on_close_three_three_window)
+window_three_three.protocol('WM_DELETE_WINDOW',
+                            lambda: close_educ_edit_window(window_three_three))
 
 old_gro = ttk.Label(window_three_three, text='Старый group')
 old_gro_form = ttk.Entry(window_three_three, justify='left')
@@ -522,7 +284,9 @@ old_spe_form = ttk.Entry(window_three_three, justify='left')
 new_spe = ttk.Label(window_three_three, text='Новый specialization')
 new_spe_form = ttk.Entry(window_three_three, justify='left')
 but_spe_edu = ttk.Button(window_three_three, text='Изменить данные',
-                         command=form_redac_three)
+                         command=lambda:
+                         submit_edit_educa_form(old_gro_form.get(), old_spe_form.get(),
+                                                new_gro_form.get(), new_spe_form.get()))
 
 old_gro.grid(row=0, column=0, padx=10, pady=10)
 old_gro_form.grid(row=0, column=1, padx=10, pady=10)
@@ -537,19 +301,20 @@ but_spe_edu.grid(row=4, column=0, columnspan=2, padx=10, pady=10)
 
 # Создание чевертого окна, для удаления данных таблица - Users
 
-window_four = tk.Tk()
+window_four = tk.Toplevel(window_one)
 window_four.title('Удаление данных Users')
 window_four.geometry('450x100')
 window_four.resizable(False, False)
 window_four.withdraw()
-window_four.protocol('WM_DELETE_WINDOW', on_close_four_window)
+window_four.protocol('WM_DELETE_WINDOW', lambda: close_user_delete_window(window_four))
 
 
 user_del = ttk.Label(window_four,
                      text='Введите username, который необходимо удалить')
 user_del_form = ttk.Entry(window_four, justify='left')
 user_del_but = ttk.Button(window_four, text='Удалить username',
-                          command=del_username)
+                          command=lambda:
+                          submit_delete_user_form(user_del_form.get()))
 
 user_del.grid(row=0, column=0, padx=10, pady=10)
 user_del_form.grid(row=0, column=1, padx=10, pady=10)
@@ -559,18 +324,19 @@ user_del_but.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
 # Создание чевертого окна, для удаления данных таблица - Infown
 
 
-window_four_two = tk.Tk()
+window_four_two = tk.Toplevel(window_one)
 window_four_two.title('Удаление данных Inform')
 window_four_two.geometry('450x100')
 window_four_two.resizable(False, False)
 window_four_two.withdraw()
-window_four_two.protocol('WM_DELETE_WINDOW', on_close_four_two_window)
+window_four_two.protocol('WM_DELETE_WINDOW',
+                         lambda: close_inform_delete_window(window_four_two))
 
 email_del = ttk.Label(window_four_two,
                       text='Введите email, который необходимо удалить')
 email_del_form = ttk.Entry(window_four_two, justify='left')
 email_del_but = ttk.Button(window_four_two, text='Удалить email',
-                           command=del_email_two)
+                           command=lambda: submit_delete_inf_form(email_del_form.get()))
 
 email_del.grid(row=0, column=0, padx=10, pady=10)
 email_del_form.grid(row=0, column=1, padx=10, pady=10)
@@ -579,12 +345,13 @@ email_del_but.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
 # Создание чевертого окна, для удаления данных таблица - Education
 
 
-window_four_three = tk.Tk()
+window_four_three = tk.Toplevel(window_one)
 window_four_three.title('Удаление данных Education')
 window_four_three.geometry('460x150')
 window_four_three.resizable(False, False)
 window_four_three.withdraw()
-window_four_three.protocol('WM_DELETE_WINDOW', on_close_four_three_window)
+window_four_three.protocol('WM_DELETE_WINDOW',
+                           lambda: close_educ_delete_window(window_four_three))
 
 gro_del = ttk.Label(window_four_three,
                     text='Введите group, который необходимо удалить')
@@ -593,7 +360,8 @@ spe_del = ttk.Label(window_four_three,
                     text='Введите specialization, который необходимо удалить')
 spe_del_form = ttk.Entry(window_four_three, justify='left')
 email_del_but = ttk.Button(window_four_three, text='Удалить',
-                           command=del_group_spe)
+                           command=lambda:
+                           submit_delete_educ_form(gro_del_form.get(), spe_del_form.get()))
 
 gro_del.grid(row=0, column=0, padx=10, pady=10)
 gro_del_form.grid(row=0, column=1, padx=10, pady=10)
@@ -626,9 +394,9 @@ def on_close_main_window():
 
 
 db.connect()
-dow_dan()
-dow_dan_inforn()
-dow_dan_educa()
+load_users(table)
+load_inform(table_two)
+load_education(table_three)
 db.close()
 
 window_one.protocol('WM_DELETE_WINDOW', on_close_main_window)
