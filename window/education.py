@@ -1,7 +1,7 @@
 ''' education'''
 import tkinter as tk
 from tkinter import ttk
-from window.window_one import frame_five, frame_six, window_one
+from window.window_one import frame_six, window_one, frame_five
 from controller.educa_con import open_educa_open_window, open_educa_edit_window, \
     open_edu_delete_window, close_educ_open_window, close_educ_edit_window, \
     close_educ_delete_window, submit_educa_form, submit_edit_educa_form, \

@@ -31,7 +31,6 @@ gerate_but.grid(row=0, column=0, padx=20, pady=10)
 del_but.grid(row=1, column=0, padx=20, pady=10)
 apd_but.grid(row=2, column=0, padx=20, pady=10)
 
-
 # Окно Users для создания записи в таблице
 
 

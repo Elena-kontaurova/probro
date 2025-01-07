@@ -1,4 +1,4 @@
-''' так внешка '''
+''' так запуск программы '''
 from connect import db
 from controller.users_con import load_users
 from controller.inform_con import load_inform

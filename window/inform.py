@@ -1,7 +1,7 @@
 ''' inform'''
 import tkinter as tk
 from tkinter import ttk
-from window.window_one import frame_four, frame_three, window_one
+from window.window_one import frame_four, window_one, frame_three
 from controller.inform_con import open_inform_open_window, open_inform_edit_window, \
     open_inf_delete_window, close_inform_open_window, submit_inform_form, \
     close_inform_edit_window, submit_edit_inform_form, close_inform_delete_window, \
